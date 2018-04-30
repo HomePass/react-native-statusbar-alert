@@ -16,7 +16,7 @@ class StatusBarAlert extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			height: new Animated.Value(0),
+			height: new Animated.Value(props.hiddenHeight),
 			opacity: new Animated.Value(0),
 			pulse: new Animated.Value(0)
 		};
@@ -91,7 +91,7 @@ class StatusBarAlert extends Component {
 				requestAnimationFrame(() => {
 					Animated.parallel([
 						Animated.timing(this.state.height, {
-							toValue: 0,
+							toValue: this.props.hiddenHeight,
 							duration: SLIDE_DURATION
 						}),
 						Animated.timing(this.state.opacity, {
@@ -191,6 +191,7 @@ StatusBarAlert.propTypes = {
 	color: PropTypes.string,
 	height: PropTypes.number,
 	statusbarHeight: PropTypes.number,
+	hiddenHeight: PropTypes.number,
 	onPress: PropTypes.func,
 	style: PropTypes.any
 };
@@ -203,6 +204,7 @@ StatusBarAlert.defaultProps = {
 	highlightColor: null,
 	color: styles.text.color,
 	height: STATUS_BAR_HEIGHT,
+	hiddenHeight: 0,
 	statusbarHeight: STATUS_BAR_HEIGHT,
 	onPress: null
 };
