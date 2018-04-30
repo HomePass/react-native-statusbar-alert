@@ -16,8 +16,8 @@ class StatusBarAlert extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			height: new Animated.Value(props.hiddenHeight),
-			opacity: new Animated.Value(0),
+			height: new Animated.Value(props.visible ? this.getHeight(props) : props.hiddenHeight),
+			opacity: new Animated.Value(props.visible ? 1 : 0),
 			pulse: new Animated.Value(0)
 		};
 		this.timer = null;
@@ -29,11 +29,7 @@ class StatusBarAlert extends Component {
 			requestAnimationFrame(() => {
 				Animated.parallel([
 					Animated.timing(this.state.height, {
-						toValue:
-							Platform.OS === 'ios'
-								? this.props.height +
-									(this.props.statusbarHeight || STATUS_BAR_HEIGHT)
-								: this.props.height,
+						toValue: this.getHeight(this.props),
 						duration: SLIDE_DURATION
 					}),
 					Animated.timing(this.state.opacity, {
@@ -43,40 +39,38 @@ class StatusBarAlert extends Component {
 				]).start();
 			});
 		}
-		// Pulse animation
-		this.timer = setInterval(() => {
-			if (this.props.pulse) {
-				if (Math.round(this.state.pulse._value) === 1) {
-					Animated.timing(this.state.pulse, {
-						toValue: 0,
-						duration: PULSE_DURATION
-					}).start();
-				} else {
-					Animated.timing(this.state.pulse, {
-						toValue: 1,
-						duration: PULSE_DURATION
-					}).start();
+		if (this.props.pulse) {
+			// Pulse animation
+			this.timer = setInterval(() => {
+				if (this.props.pulse) {
+					if (Math.round(this.state.pulse._value) === 1) {
+						Animated.timing(this.state.pulse, {
+							toValue: 0,
+							duration: PULSE_DURATION
+						}).start();
+					} else {
+						Animated.timing(this.state.pulse, {
+							toValue: 1,
+							duration: PULSE_DURATION
+						}).start();
+					}
 				}
-			}
-		}, PULSE_DURATION);
+			}, PULSE_DURATION);
+		}
 	}
 
 	componentWillUnmount() {
-		clearInterval(this.timer);
+		if (this.timer) clearInterval(this.timer);
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.visible !== this.props.visible) {
+		if (nextProps.visible !== this.props.visible || nextProps.statusBarHeight !== this.props.statusbarHeight) {
 			if (nextProps.visible === true) {
 				// Show alert
 				requestAnimationFrame(() => {
 					Animated.parallel([
 						Animated.timing(this.state.height, {
-							toValue:
-								Platform.OS === 'ios'
-									? nextProps.height +
-										(this.props.statusbarHeight || STATUS_BAR_HEIGHT)
-									: nextProps.height,
+							toValue: this.getHeight(nextProps),
 							duration: SLIDE_DURATION
 						}),
 						Animated.timing(this.state.opacity, {
@@ -102,6 +96,12 @@ class StatusBarAlert extends Component {
 				});
 			}
 		}
+	}
+
+	getHeight(props) {
+		return Platform.OS === 'ios'
+			? props.height + (props.statusbarHeight || STATUS_BAR_HEIGHT)
+			: props.height;
 	}
 
 	render() {
