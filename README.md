@@ -1,6 +1,6 @@
 # React Native Statusbar Alert
 
-A status bar alert (e.g. in-call, recording, navigating) for React Native
+A status bar alert (e.g. in-call, recording, navigating) for React Native.
 
 ## Install
 
@@ -21,19 +21,6 @@ A status bar alert (e.g. in-call, recording, navigating) for React Native
 
 ![basic](screenshots/react-native-statusbar-alert.mov.gif)
 
-### Pulse
-
-```js
-<StatusBarAlert
-  visible={true}
-  message="Silent Switch ON"
-  backgroundColor="#3CC29E"
-  color="white"
-  pulse="background"
-/>
-```
-
-![pulse](screenshots/react-native-statusbar-alert-pulse.mov.gif)
 
 ### Press
 
@@ -75,12 +62,11 @@ A status bar alert (e.g. in-call, recording, navigating) for React Native
 | visible         | `true` to show, `false` to hide | true        | bool                      | `false`
 | message         | message to display in alert     | true        | string                    | `''`
 | onPress         | callback on press event         | false       | func                      | `null`
-| pulse           | animate the text or background  | false       | enum('text','background') | `false`
 | backgroundColor | background color                | false       | [color][1]                | `'#3DD84C'`
-| highlightColor  | color on press and pulse        | false       | [color][1]                | `darken(this.props.backgroundColor, 0.9)`
 | color           | text color                      | false       | [color][1]                | `'white'`
 | height          | height of children container    | false       | int                       | 20
 | statusbarHeight | [custom status bar height][2]   | false       | int                       | 20
+| hiddenHeight    | height of the bar when hidden   | false       | int                       | 0
 | style           | styles for children container   | false       | [style object][3]         | `{}`
 
 [1]: https://facebook.github.io/react-native/docs/colors.html  "React Native Colors"
