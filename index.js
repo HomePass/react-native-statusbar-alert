@@ -24,9 +24,13 @@ class StatusBarAlert extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.visible && !this.props.visible) {
-			this.setState({ visible: true }, () => this.performAnimation(nextProps));
+			this.setState({ visible: true }, () => {
+				this.performAnimation(nextProps);
+			});
 		} else if (!nextProps.visible && this.props.visible) {
-			this.performAnimation(nextProps, () => if (!nextProps.hiddenHeight) this.setState({ visible: false }));
+			this.performAnimation(nextProps, () => {
+				if (!nextProps.hiddenHeight) this.setState({ visible: false });
+			});
 		} else if (nextProps.statusBarHeight !== this.props.statusbarHeight) {
 			this.performAnimation(nextProps);
 		}
