@@ -117,7 +117,7 @@ const styles = {
 		height: STATUS_BAR_HEIGHT,
 		fontSize: 14,
 		fontWeight: '400',
-		lineHeight: 20,
+		lineHeight: STATUS_BAR_HEIGHT,
 		marginBottom: Platform.OS === 'ios' ? 4 : 0,
 		color: 'white'
 	}
